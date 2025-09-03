@@ -40,7 +40,6 @@ ai-threat-detection/
 │  ├─ preprocess.py       # Data preprocessing script
 │  ├─ stream_agent.py     # Real-time log streaming agent
 │  └─ train.py            # Model training script
-├─ .gitignore             # Ignore venv, models, etc.
 ├─ requirements.txt       # Project dependencies
 └─ README.md              # Project overview and instructions
 ````
