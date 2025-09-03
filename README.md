@@ -22,7 +22,7 @@ The project includes a complete pipeline from data preprocessing to a REST API a
 
 ## 📂 Project Structure
 
-```text
+```
 ai-threat-detection/
 ├─ .venv/                 # Python virtual environment
 ├─ data/
@@ -134,5 +134,4 @@ python -m src.stream_agent
 ---
 
 
-Do you want me to also **add badges (like Python version, Flask, dataset support)** at the top for extra polish like we did earlier?
-```
+
