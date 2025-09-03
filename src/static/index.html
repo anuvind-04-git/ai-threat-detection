@@ -1,1 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Driven Threat Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f7f9fc;
+        }
+        .an {
+            color: #dc2626; /* Tailwind text-red-600 */
+            font-weight: 600; /* Tailwind font-semibold */
+        }
+        .bg-gradient-gray {
+            background-image: linear-gradient(135deg, #f0f2f5 0%, #e1e5eb 100%);
+        .score-box-normal {
+            background-color: #f0fdf4; /* Tailwind bg-green-50 */
+            border-color: #22c55e;    /* Tailwind border-green-500 */
+            color: #15803d;           /* Tailwind text-green-700 */
+        }
+        .score-box-anomaly {
+            background-color: #fef2f2; /* Tailwind bg-red-50 */
+            border-color: #ef4444;     /* Tailwind border-red-500 */
+            color: #b91c1c;            /* Tailwind text-red-700 */
+        }
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex flex-col items-center justify-center min-h-screen">
+    <div class="container mx-auto p-6 sm:p-12 bg-white shadow-2xl rounded-3xl border border-gray-100 max-w-4xl">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 mb-2">AI-Driven Threat Detection</h1>
+            <p class="text-base sm:text-lg text-gray-600">
+                A simple, powerful system to identify anomalies in network traffic.
+            </p>
+        </div>
+
+        <div class="bg-gradient-gray p-6 rounded-2xl shadow-inner mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+                <input id="bytes_out" placeholder="Bytes Out" type="number" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm text-gray-800" />
+                <input id="bytes_in" placeholder="Bytes In" type="number" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm text-gray-800" />
+                <input id="duration_s" placeholder="Duration (s)" type="number" step="0.1" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm text-gray-800" />
+                <input id="hour" placeholder="Hour (0-23)" type="number" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm text-gray-800" />
+                <input id="is_private_ip" placeholder="Private IP (0/1)" type="number" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 shadow-sm text-gray-800" />
+            </div>
+            <button onclick="score()" class="w-full bg-blue-600 text-white font-semibold py-3 px-4 rounded-xl shadow-md hover:bg-blue-700 transition-colors duration-300">
+                Score Event
+            </button>
+        </div>
+
+        <div id="result-container" class="mt-8 p-6 bg-gray-100 rounded-xl border border-gray-200 text-center text-lg font-medium text-gray-700 hidden">
+            <span id="out"></span>
+        </div>
+
+        <div id="log" class="mt-8 space-y-3 max-h-[40vh] overflow-y-auto p-4 bg-gray-100 rounded-xl border border-gray-200">
+            <div class="text-center text-gray-500 italic">No events scored yet.</div>
+        </div>
+    </div>
+
+    <script>
+        async function score() {
+            // Show a loading state
+            const scoreButton = document.querySelector('button');
+            scoreButton.textContent = 'Scoring...';
+            scoreButton.disabled = true;
+
+            const payload = {
+                bytes_out: +document.getElementById('bytes_out').value || 0,
+                bytes_in: +document.getElementById('bytes_in').value || 0,
+                duration_s: +document.getElementById('duration_s').value || 0,
+                hour: +document.getElementById('hour').value || 0,
+                is_private_ip: +document.getElementById('is_private_ip').value || 0,
+            };
+
+            const r = await fetch('/score', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const j = await r.json();
+
+            // Hide the loading state
+            scoreButton.textContent = 'Score Event';
+            scoreButton.disabled = false;
+
+            const msg = `Anomaly Score: ${j.anomaly_score.toFixed(3)} → ${j.is_anomaly ? 'ANOMALY' : 'Normal'}`;
+
+            document.getElementById('out').textContent = msg;
+            document.getElementById('result-container').classList.remove('hidden');
+
+            const logElement = document.getElementById('log');
+            if (logElement.firstElementChild && logElement.firstElementChild.classList.contains('italic')) {
+                logElement.innerHTML = '';
+            }
+
+            const p = document.createElement('div');
+            p.className = `p-4 rounded-lg border-l-4 shadow-sm transition-colors duration-300 ${j.is_anomaly ? 'score-box-anomaly' : 'score-box-normal'}`;
+            p.innerHTML = `<code class="text-xs block text-gray-500 mb-1 font-mono">${JSON.stringify(payload)}</code>
+                           <span class="text-base font-semibold">${msg}</span>`;
+
+            logElement.prepend(p);
+        }
+    </script>
+</body>
+</html>
 
