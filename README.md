@@ -7,7 +7,7 @@ The project includes a complete pipeline from data preprocessing to a REST API a
 
 ⚠️ **For educational use only. Not for production deployment without security review.**
 
----
+
 
  ✨ Key Components
 
@@ -18,7 +18,6 @@ The project includes a complete pipeline from data preprocessing to a REST API a
 - `src/stream_agent.py` → Simulates real-time log analysis by continuously feeding new data to the API.  
 - `src/infer.py` → Command-line helper to score individual log entries.  
 
----
 
  📂 Project Structure
 
