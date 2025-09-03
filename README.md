@@ -1,5 +1,5 @@
 ````markdown
-# AI-Driven Threat Detection 🔎🛡️
+ AI-Driven Threat Detection 🔎🛡️
 
 This repository contains an end-to-end AI-driven Threat Detection System.  
 It trains an Isolation Forest model on security log features to identify and flag anomalous network activity.  
@@ -9,7 +9,7 @@ The project includes a complete pipeline from data preprocessing to a REST API a
 
 ---
 
-## ✨ Key Components
+ ✨ Key Components
 
 - `src/preprocess.py` → Cleans raw log data and extracts relevant features.  
 - `src/train.py` → Trains the unsupervised Isolation Forest model and an optional supervised Random Forest model for evaluation.  
@@ -20,7 +20,7 @@ The project includes a complete pipeline from data preprocessing to a REST API a
 
 ---
 
-## 📂 Project Structure
+ 📂 Project Structure
 
 ```
 ai-threat-detection/
