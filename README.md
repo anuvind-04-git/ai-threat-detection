@@ -53,7 +53,7 @@ ai-threat-detection/
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/ai-threat-detection.git
+git clone https://github.com/anuvind-04-git/ai-threat-detection.git
 cd ai-threat-detection
 ```
 
